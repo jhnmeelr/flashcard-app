@@ -12,19 +12,12 @@ const store = Redux.createStore(Redux.combineReducers({
     cards
 }));
 
-store.subscribe(() => {
-    console.log(store.getState());
-});
+const App = (props) => {
+    return (
+        <div className="app">
+            {props.children}
+        </div>
+    );
+}
 
-store.dispatch({
-    type: 'ADD_CARD',
-    data: {
-        front: 'front',
-        back: 'back'
-    }
-});
-
-store.dispatch({
-    type: 'ADD_CARD',
-    data: {}
-});
+ReactDOM.render(<App>Hello React</App>, document.getElementById('root'));
