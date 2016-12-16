@@ -11,6 +11,25 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var addDeck = function addDeck(name) {
+    return {
+        type: "ADD_DECK",
+        data: name
+    };
+};
+
+var showAddDeck = function showAddDeck() {
+    return {
+        type: "SHOW_ADD_DECK"
+    };
+};
+
+var hideAddDeck = function hideAddDeck() {
+    return {
+        type: "HIDE_ADD_DECK"
+    };
+};
+
 var cards = function cards() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     var action = arguments[1];
@@ -24,8 +43,37 @@ var cards = function cards() {
     }
 };
 
+var decks = function decks() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var action = arguments[1];
+
+    switch (action.type) {
+        case 'ADD_DECK':
+            var newDeck = { name: action.data, id: +new Date() };
+            return state.concat([newDeck]);
+        default:
+            return state;
+    }
+};
+
+var addingDeck = function addingDeck() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case 'SHOW_ADD_DECK':
+            return true;
+        case 'HIDE_ADD_DECK':
+            return false;
+        default:
+            return state;
+    }
+};
+
 var store = Redux.createStore(Redux.combineReducers({
-    cards: cards
+    cards: cards,
+    decks: decks,
+    addingDeck: addingDeck
 }));
 
 var App = function App(props) {
@@ -76,10 +124,26 @@ var Sidebar = function (_React$Component) {
     return Sidebar;
 }(React.Component);
 
-ReactDOM.render(React.createElement(
-    App,
-    null,
-    React.createElement(Sidebar, { decks: [{ name: "Deck 1" }], addingDeck: true })
-), document.getElementById('root'));
+function run() {
+    var state = store.getState();
+    ReactDOM.render(React.createElement(
+        App,
+        null,
+        React.createElement(Sidebar, { decks: state.decks, addingDeck: state.addingDeck })
+    ), document.getElementById('root'));
+}
+
+run();
+store.subscribe(run);
+
+window.show = function () {
+    return store.dispatch(showAddDeck());
+};
+window.hide = function () {
+    return store.dispatch(hideAddDeck());
+};
+window.add = function () {
+    return store.dispatch(addDeck(new Date().toString()));
+};
 
 },{}]},{},[1]);
