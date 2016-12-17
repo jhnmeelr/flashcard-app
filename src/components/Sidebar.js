@@ -1,4 +1,18 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { addDeck, showAddDeck, hideAddDeck } from '../actions';
+
+const mapStateToProps = ({ decks, addingDeck }) => ({
+    decks,
+    addingDeck
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    addDeck: name => dispatch(addDeck(name)),
+    showAddDeck: name => dispatch(showAddDeck()),
+    hideAddDeck: name => dispatch(hideAddDeck())
+});
 
 class Sidebar extends Component {
     componentDidUpdate() {
@@ -28,4 +42,4 @@ class Sidebar extends Component {
     }
 }
 
-export default Sidebar;
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
