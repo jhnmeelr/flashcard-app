@@ -11,20 +11,20 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var addDeck = function addDeck(name) {
+var _addDeck = function _addDeck(name) {
     return {
         type: "ADD_DECK",
         data: name
     };
 };
 
-var showAddDeck = function showAddDeck() {
+var _showAddDeck = function _showAddDeck() {
     return {
         type: "SHOW_ADD_DECK"
     };
 };
 
-var hideAddDeck = function hideAddDeck() {
+var _hideAddDeck = function _hideAddDeck() {
     return {
         type: "HIDE_ADD_DECK"
     };
@@ -87,15 +87,36 @@ var App = function App(props) {
 var Sidebar = function (_React$Component) {
     _inherits(Sidebar, _React$Component);
 
-    function Sidebar(props) {
+    function Sidebar() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
         _classCallCheck(this, Sidebar);
 
-        return _possibleConstructorReturn(this, (Sidebar.__proto__ || Object.getPrototypeOf(Sidebar)).call(this, props));
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Sidebar.__proto__ || Object.getPrototypeOf(Sidebar)).call.apply(_ref, [this].concat(args))), _this), _this.createDeck = function (e) {
+            if (e.which !== 13) return;
+            var name = _this.refs.add.value;
+            _this.props.addDeck(name);
+            _this.props.hideAddDeck();
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(Sidebar, [{
+        key: "componentDidUpdate",
+        value: function componentDidUpdate() {
+            var element = this.refs.add;
+            if (element) element.focus();
+        }
+    }, {
         key: "render",
         value: function render() {
+            var _this2 = this;
+
             var props = this.props;
             return React.createElement(
                 "div",
@@ -104,6 +125,13 @@ var Sidebar = function (_React$Component) {
                     "h2",
                     null,
                     "All Decks"
+                ),
+                React.createElement(
+                    "button",
+                    { onClick: function onClick(e) {
+                            return _this2.props.showAddDeck();
+                        } },
+                    "New Deck"
                 ),
                 React.createElement(
                     "ul",
@@ -116,7 +144,7 @@ var Sidebar = function (_React$Component) {
                         );
                     })
                 ),
-                props.addingDeck && React.createElement("input", { ref: "add" })
+                props.addingDeck && React.createElement("input", { ref: "add", onKeyPress: this.createDeck })
             );
         }
     }]);
@@ -129,21 +157,23 @@ function run() {
     ReactDOM.render(React.createElement(
         App,
         null,
-        React.createElement(Sidebar, { decks: state.decks, addingDeck: state.addingDeck })
+        React.createElement(Sidebar, {
+            decks: state.decks,
+            addingDeck: state.addingDeck,
+            addDeck: function addDeck(name) {
+                return store.dispatch(_addDeck(name));
+            },
+            showAddDeck: function showAddDeck(name) {
+                return store.dispatch(_showAddDeck(name));
+            },
+            hideAddDeck: function hideAddDeck() {
+                return store.dispatch(_hideAddDeck());
+            }
+        })
     ), document.getElementById('root'));
 }
 
 run();
 store.subscribe(run);
-
-window.show = function () {
-    return store.dispatch(showAddDeck());
-};
-window.hide = function () {
-    return store.dispatch(hideAddDeck());
-};
-window.add = function () {
-    return store.dispatch(addDeck(new Date().toString()));
-};
 
 },{}]},{},[1]);
