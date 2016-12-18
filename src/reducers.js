@@ -3,6 +3,11 @@ export const cards = (state = [], action) => {
         case 'ADD_CARD':
             let newCard = { ...action.data, ...{ score: 1, id: +new Date() } };
             return state.concat([ newCard ]);
+        case 'UPDATE_CARD':
+            let cardUpdate = action.data;
+            return state.map((card) => (card.id !== cardUpdate.id) ? card : { ...card, ...cardUpdate });
+        case 'DELETE_CARD':
+            return state.filter((card) => (card.id !== action.data));
         default:
             return state;
     }
