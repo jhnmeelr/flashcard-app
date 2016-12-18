@@ -10,3 +10,8 @@ export const showAddDeck = () => ({
 export const hideAddDeck = () => ({
     type: "HIDE_ADD_DECK"
 });
+
+export const addCard = (card) => ({
+    type: "ADD_CARD",
+    data: card
+});
