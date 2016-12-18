@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-import { addDeck, showAddDeck, hideAddDeck } from '../actions';
+import { addDeck, hideAddDeck } from '../actions';
 
 const mapStateToProps = ({ decks, addingDeck }) => ({
     decks,
@@ -11,7 +11,6 @@ const mapStateToProps = ({ decks, addingDeck }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     addDeck: name => dispatch(addDeck(name)),
-    showAddDeck: name => dispatch(showAddDeck()),
     hideAddDeck: name => dispatch(hideAddDeck())
 });
 
@@ -31,7 +30,6 @@ class Sidebar extends Component {
         return (
             <div className="sidebar">
                 <h2>All Decks</h2>
-                <button onClick={e => this.props.showAddDeck()}>New Deck</button>
                 <ul>
                     {props.decks.map((deck, i) => {
                         return (
