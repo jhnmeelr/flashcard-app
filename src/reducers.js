@@ -30,3 +30,10 @@ export const addingDeck = (state = false, action) => {
         default: return state;
     }
 }
+
+export const showBack = (state = false, action) => {
+    switch (action.type) {
+        case 'SHOW_BACK': return action.data || false;
+        default: return state;
+    }
+}

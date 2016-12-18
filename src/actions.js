@@ -25,3 +25,8 @@ export const deleteCard = (cardId) => ({
     type: "DELETE_CARD",
     data: cardId
 });
+
+export const setShowBack = (back) => ({
+    type: "SHOW_BACK",
+    data: back
+});
